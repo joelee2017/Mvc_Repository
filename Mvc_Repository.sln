@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2037
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvc_Repository", "Mvc_Repository\Mvc_Repository.csproj", "{F15C286A-03AE-4CCD-A355-2D3C6208F64C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvc_Repository.Web", "Mvc_Repository\Mvc_Repository.Web.csproj", "{F15C286A-03AE-4CCD-A355-2D3C6208F64C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mvc_Repository.Models", "Mvc_Repository.Models\Mvc_Repository.Models.csproj", "{1A8A252D-EF9E-49E6-BFC1-2F8D9DFA6D6C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{F15C286A-03AE-4CCD-A355-2D3C6208F64C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F15C286A-03AE-4CCD-A355-2D3C6208F64C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F15C286A-03AE-4CCD-A355-2D3C6208F64C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A8A252D-EF9E-49E6-BFC1-2F8D9DFA6D6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A8A252D-EF9E-49E6-BFC1-2F8D9DFA6D6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A8A252D-EF9E-49E6-BFC1-2F8D9DFA6D6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A8A252D-EF9E-49E6-BFC1-2F8D9DFA6D6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

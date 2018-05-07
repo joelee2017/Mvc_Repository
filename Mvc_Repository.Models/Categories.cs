@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Mvc_Repository.Web.Models
+namespace Mvc_Repository.Models
 {
     using System;
     using System.Collections.Generic;
