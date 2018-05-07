@@ -7,16 +7,7 @@ namespace Mvc_Repository.Models.Interface
 {
     public interface IProductRepository : IRepository<Products>
     {
-        //void Create(Products instance);
-
-        //void Update(Products instance);
-
-        //void Delete(Products instance);
-
-        //Products Get(int productID);
-
-        //IQueryable<Products> GetAll();
-
-        //void SaveChanges();
+        Products GetByID(int productID);
+        IEnumerable<Products> GetByCateogy(int categoryID);
     }
 }

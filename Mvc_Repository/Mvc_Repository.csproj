@@ -159,6 +159,8 @@
     <Compile Include="Models\Categories.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Interface\ICategoryRepository.cs" />
+    <Compile Include="Models\Interface\IProductRepository.cs" />
     <Compile Include="Models\Interface\IRepository.cs" />
     <Compile Include="Models\Model1.Context.cs">
       <AutoGen>True</AutoGen>
@@ -178,7 +180,9 @@
     <Compile Include="Models\Products.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Repositiory\CategoryRepository.cs" />
     <Compile Include="Models\Repositiory\GenericRepository.cs" />
+    <Compile Include="Models\Repositiory\ProductRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
