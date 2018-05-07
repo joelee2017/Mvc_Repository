@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Mvc_Repository.Models.Interface
 {
-    public interface ICategoryRepository
+    public interface ICategoryRepository : IDisposable
     {
         void Create(Categories instance);
 

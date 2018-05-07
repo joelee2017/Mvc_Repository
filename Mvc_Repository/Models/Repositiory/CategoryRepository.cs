@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Mvc_Repository.Models.Repositiory
 {
-    public class CategoryRepository : ICategoryRepository
+    public class CategoryRepository : ICategoryRepository, IDisposable
     {
         protected NorthwindEntities db
         {
@@ -22,7 +22,7 @@ namespace Mvc_Repository.Models.Repositiory
         
         public void Create(Categories instance)
         {
-            if(instance ==null)
+            if(instance == null)
             {
                 throw new ArgumentNullException("instance");
             }
@@ -74,6 +74,12 @@ namespace Mvc_Repository.Models.Repositiory
             this.SaveChanges();
         }
 
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         protected  virtual void Dispose(bool disposing)
         {
             if(disposing)
@@ -85,5 +91,7 @@ namespace Mvc_Repository.Models.Repositiory
                 }
             }
         }
+
+      
     }
 }

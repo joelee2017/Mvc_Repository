@@ -6,19 +6,33 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Mvc_Repository.Models;
+using Mvc_Repository.Models.Interface;
 
 namespace Mvc_Repository.Controllers
 {
     public class CategoryController : Controller
     {
+        private ICategoryRepository categoryRepository;
+
+        public CategoryController()
+        {
+            this.categoryRepository = new Models.Repositiory.CategoryRepository();
+        }
+
+
         // GET: Category
         public ActionResult Index()
         {
             using (NorthwindEntities db = new NorthwindEntities())
             {
-                var query = db.Categories.OrderBy(x => x.CategoryID);
-                ViewData.Model = query.ToList();
-                return View();
+                //new 
+                var categories = this.categoryRepository.GetAll().ToList();
+                return View(categories);
+
+                //old
+                //var query = db.Categories.OrderBy(x => x.CategoryID);
+                //ViewData.Model = query.ToList();
+                //return View();
             }
         }
 
@@ -28,16 +42,21 @@ namespace Mvc_Repository.Controllers
         {
             if (!id.HasValue)
             {
-                return RedirectToAction("index");
+                return RedirectToAction("Index");
             }
             else
             {
-                using (NorthwindEntities db = new NorthwindEntities())
-                {
-                    var model = db.Categories.FirstOrDefault(x => x.CategoryID == id.Value);
-                    ViewData.Model = model;
-                    return View();
-                }
+                //new
+                var category = this.categoryRepository.Get(id.Value);
+                return View(category);
+
+                //old
+                //using (NorthwindEntities db = new NorthwindEntities())
+                //{
+                //    var model = db.categories.firstordefault(x => x.categoryid == id.value);
+                //    viewdata.model = model;
+                //    return view();
+                //}
             }
         }
 
@@ -52,12 +71,17 @@ namespace Mvc_Repository.Controllers
         {
             if(category != null && ModelState.IsValid)
             {
-                using (NorthwindEntities db = new NorthwindEntities())
-                {
-                    db.Categories.Add(category);
-                    db.SaveChanges();
-                }
-                return RedirectToAction("index");
+                //new 
+                this.categoryRepository.Create(category);
+                return RedirectToAction("Index");
+
+                //old
+                //using (NorthwindEntities db = new NorthwindEntities())
+                //{
+                //    db.Categories.Add(category);
+                //    db.SaveChanges();
+                //}
+                //return RedirectToAction("index");
             }
             else
             {
@@ -70,16 +94,21 @@ namespace Mvc_Repository.Controllers
         {
             if(!id.HasValue)
             {
-                return RedirectToAction("index");
+                return RedirectToAction("Index");
             }
             else
             {
-                using (NorthwindEntities db = new NorthwindEntities())
-                {
-                    var model = db.Categories.FirstOrDefault(x => x.CategoryID == id.Value);
-                    ViewData.Model = model;
-                    return View();
-                }
+                //new
+                var category = this.categoryRepository.Get(id.Value);
+                return View(category);
+
+                //old
+                //using (NorthwindEntities db = new NorthwindEntities())
+                //{
+                //    var model = db.Categories.FirstOrDefault(x => x.CategoryID == id.Value);
+                //    ViewData.Model = model;
+                //    return View();
+                //}
             }
         }
 
@@ -88,16 +117,21 @@ namespace Mvc_Repository.Controllers
         {
             if(category != null && ModelState.IsValid)
             {
-                using (NorthwindEntities db = new NorthwindEntities())
-                {
-                    db.Entry(category).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return View(category);
-                }
+                //new 
+                this.categoryRepository.Update(category);
+                return View(category);
+
+                //old
+                //using (NorthwindEntities db = new NorthwindEntities())
+                //{
+                //    db.Entry(category).State = EntityState.Modified;
+                //    db.SaveChanges();
+                //    return View(category);
+                //}
             }
             else
             {
-                return RedirectToAction("index");
+                return RedirectToAction("Index");
             }
         }
 
@@ -107,16 +141,21 @@ namespace Mvc_Repository.Controllers
         {
             if(!id.HasValue)
             {
-                return RedirectToAction("index");
+                return RedirectToAction("Index");
             }
             else
             {
-                using (NorthwindEntities db = new NorthwindEntities())
-                {
-                    var model = db.Categories.FirstOrDefault(x => x.CategoryID == id.Value);
-                    ViewData.Model = model;
-                    return View();
-                }
+                //new 
+                var category = this.categoryRepository.Get(id.Value);
+                return View(category);
+
+                //old
+                //using (NorthwindEntities db = new NorthwindEntities())
+                //{
+                //    var model = db.Categories.FirstOrDefault(x => x.CategoryID == id.Value);
+                //    ViewData.Model = model;
+                //    return View();
+                //}
             }
         }
 
@@ -125,18 +164,23 @@ namespace Mvc_Repository.Controllers
         {
             try
             {
-                using (NorthwindEntities db = new NorthwindEntities())
-                {
-                    var target = db.Categories.FirstOrDefault(x => x.CategoryID == id);
-                    db.Categories.Remove(target);
-                    db.SaveChanges();
-                }
+                //new
+                var category = this.categoryRepository.Get(id);
+                this.categoryRepository.Delete(category);
+
+                //old
+                //using (NorthwindEntities db = new NorthwindEntities())
+                //{
+                //    var target = db.Categories.FirstOrDefault(x => x.CategoryID == id);
+                //    db.Categories.Remove(target);
+                //    db.SaveChanges();
+                //}
             }
             catch(DataException)
             {
                 return RedirectToAction("Delect", new { id = id });
             }
-            return RedirectToAction("index");
+            return RedirectToAction("Index");
         }
     }
 }

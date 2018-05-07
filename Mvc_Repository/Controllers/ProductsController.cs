@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Mvc_Repository.Models;
+using Mvc_Repository.Models.Interface;
 
 namespace Mvc_Repository.Controllers
 {
@@ -14,27 +15,59 @@ namespace Mvc_Repository.Controllers
     {
         private NorthwindEntities db = new NorthwindEntities();
 
+        private IProductRepository productRepository;
+        private ICategoryRepository categoryRepository;
+
+        public IEnumerable<Categories> categories
+        {
+            get
+            {
+                return categoryRepository.GetAll();
+            }
+        }
+
+        public ProductsController()
+        {
+            this.productRepository = new Models.Repositiory.ProductRepository();
+            this.categoryRepository = new Models.Repositiory.CategoryRepository();
+        }
+
         // GET: Products
         public ActionResult Index()
         {
-            var products = db.Products.Include(p => p.Categories);
-            return View(products.ToList());
+            //new
+            var products = productRepository.GetAll().ToList();
+            return View(products);
+
+            //old
+            //var products = db.Products.Include(p => p.Categories);
+            //return View(products.ToList());
         }
+        //==========================================================================
 
         // GET: Products/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(int id = 0)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Products products = db.Products.Find(id);
-            if (products == null)
+            //new 
+            Products products = productRepository.Get(id);
+            if(products == null)
             {
                 return HttpNotFound();
             }
             return View(products);
+            //old
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //Products products = db.Products.Find(id);
+            //if (products == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //return View(products);
         }
+        //===============================================================================
 
         // GET: Products/Create
         public ActionResult Create()
@@ -47,32 +80,42 @@ namespace Mvc_Repository.Controllers
         // 若要免於過量張貼攻擊，請啟用想要繫結的特定屬性，如需
         // 詳細資訊，請參閱 https://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ProductID,ProductName,SupplierID,CategoryID,QuantityPerUnit,UnitPrice,UnitsInStock,UnitsOnOrder,ReorderLevel,Discontinued")] Products products)
+        //[ValidateAntiForgeryToken]
+        public ActionResult Create(Products products)
         {
             if (ModelState.IsValid)
             {
-                db.Products.Add(products);
-                db.SaveChanges();
+                //new 
+                this.productRepository.Create(products);
                 return RedirectToAction("Index");
-            }
 
+                //old
+                //db.Products.Add(products);
+                //db.SaveChanges();
+                //return RedirectToAction("Index");
+            }
             ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName", products.CategoryID);
             return View(products);
         }
+        //=================================================================================
 
         // GET: Products/Edit/5
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(int id = 0)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Products products = db.Products.Find(id);
+            Products products = this.productRepository.Get(id);            
             if (products == null)
             {
+                //new
                 return HttpNotFound();
+                //old
+                //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            //old
+            //Products products = db.Products.Find(id);
+            //if (products == null)
+            //{
+            //    return HttpNotFound();
+            //}
             ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName", products.CategoryID);
             return View(products);
         }
@@ -81,52 +124,66 @@ namespace Mvc_Repository.Controllers
         // 若要免於過量張貼攻擊，請啟用想要繫結的特定屬性，如需
         // 詳細資訊，請參閱 https://go.microsoft.com/fwlink/?LinkId=317598。
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ProductID,ProductName,SupplierID,CategoryID,QuantityPerUnit,UnitPrice,UnitsInStock,UnitsOnOrder,ReorderLevel,Discontinued")] Products products)
+        //[ValidateAntiForgeryToken]
+        public ActionResult Edit(Products products)
         {
+            
             if (ModelState.IsValid)
             {
-                db.Entry(products).State = EntityState.Modified;
-                db.SaveChanges();
+                //new 
+                this.productRepository.Update(products);
                 return RedirectToAction("Index");
+                //old
+                //db.Entry(products).State = EntityState.Modified;
+                //db.SaveChanges();
+                //return RedirectToAction("Index");
             }
             ViewBag.CategoryID = new SelectList(db.Categories, "CategoryID", "CategoryName", products.CategoryID);
             return View(products);
         }
 
         // GET: Products/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(int id = 0)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Products products = db.Products.Find(id);
+            Products products = this.productRepository.Get(id);
             if (products == null)
             {
+                //new
                 return HttpNotFound();
+
+                //old
+                //return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+            //Products products = db.Products.Find(id);
+            //if (products == null)
+            //{
+            //    return HttpNotFound();
+            //}
             return View(products);
         }
 
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Products products = db.Products.Find(id);
-            db.Products.Remove(products);
-            db.SaveChanges();
+            //new
+            Products products = this.productRepository.Get(id);
+            this.productRepository.Delete(products);
+            //old
+            //Products products = db.Products.Find(id);
+            //db.Products.Remove(products);
+            //db.SaveChanges();
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        db.Dispose();
+        //    }
+        //    base.Dispose(disposing);
+        //}
     }
 }
